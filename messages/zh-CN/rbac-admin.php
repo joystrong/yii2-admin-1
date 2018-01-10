@@ -65,4 +65,6 @@ return [
     'Menu' => '菜单',
     'Help' => '帮助',
     'Application' => '应用',
+    'Create User' => '新增管理员',
+    'Signup' => '注册',
 ];

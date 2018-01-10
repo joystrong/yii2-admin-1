@@ -2,6 +2,7 @@
 
 namespace mdm\admin\controllers;
 
+use mdm\admin\components\AccessControl;
 use Yii;
 use mdm\admin\models\form\Login;
 use mdm\admin\models\form\PasswordResetRequest;
@@ -31,6 +32,9 @@ class UserController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className()
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -143,7 +147,7 @@ class UserController extends Controller
     /**
      * Signup new user
      * @return string
-     */
+
     public function actionSignup()
     {
         $model = new Signup();
@@ -156,7 +160,7 @@ class UserController extends Controller
         return $this->render('signup', [
                 'model' => $model,
         ]);
-    }
+    }*/
 
     /**
      * Request reset password
@@ -256,5 +260,23 @@ class UserController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    /**
+     * Create new user
+     * @return string
+     */
+    public function actionCreate()
+    {
+        $model = new Signup();
+        if ($model->load(Yii::$app->getRequest()->post())) {
+            if ($user = $model->signup()) {
+                return $this->redirect(['index']);
+            }
+        }
+
+        return $this->render('create', [
+            'model' => $model,
+        ]);
     }
 }

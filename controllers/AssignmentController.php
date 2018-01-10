@@ -2,6 +2,7 @@
 
 namespace mdm\admin\controllers;
 
+use mdm\admin\components\AccessControl;
 use Yii;
 use mdm\admin\models\Assignment;
 use mdm\admin\models\searchs\Assignment as AssignmentSearch;
@@ -42,10 +43,12 @@ class AssignmentController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className()
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'assign' => ['post'],
                     'assign' => ['post'],
                     'revoke' => ['post'],
                 ],

@@ -80,4 +80,5 @@ return [
     'Menu' => 'Menu',
     'Help' => 'Help',
     'Application' => 'Application',
+    'Create User' => 'Create User',
 ];

@@ -2,7 +2,9 @@
 
 namespace mdm\admin\controllers;
 
+use mdm\admin\components\AccessControl;
 use mdm\admin\components\ItemController;
+use yii\filters\VerbFilter;
 use yii\rbac\Item;
 
 /**
@@ -13,6 +15,26 @@ use yii\rbac\Item;
  */
 class PermissionController extends ItemController
 {
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className()
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['post'],
+                    'assign' => ['post'],
+                    'remove' => ['post'],
+                ],
+            ],
+        ];
+    }
 
     /**
      * @inheritdoc

@@ -2,6 +2,7 @@
 
 namespace mdm\admin\controllers;
 
+use mdm\admin\components\AccessControl;
 use Yii;
 
 /**
@@ -12,6 +13,18 @@ use Yii;
  */
 class DefaultController extends \yii\web\Controller
 {
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className()
+            ]
+        ];
+    }
 
     /**
      * Action index

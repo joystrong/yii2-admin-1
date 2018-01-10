@@ -2,6 +2,7 @@
 
 namespace mdm\admin\controllers;
 
+use mdm\admin\components\AccessControl;
 use Yii;
 use mdm\admin\models\Menu;
 use mdm\admin\models\searchs\Menu as MenuSearch;
@@ -25,6 +26,9 @@ class MenuController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [

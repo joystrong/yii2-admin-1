@@ -194,4 +194,14 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return Configs::userDb();
     }
+
+    public function attributeLabels()
+    {
+        return [
+            'username'=>'用户名',
+            'email'=>'邮件',
+            'created_at'=>'创建时间',
+            'status'=>'状态'
+        ];
+    }
 }

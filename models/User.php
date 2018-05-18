@@ -17,6 +17,7 @@ use mdm\admin\components\Configs;
  * @property string $password_hash
  * @property string $password_reset_token
  * @property string $email
+ * @property string $phone
  * @property string $auth_key
  * @property integer $status
  * @property integer $created_at
@@ -65,6 +66,14 @@ class User extends ActiveRecord implements IdentityInterface
     public static function findIdentity($id)
     {
         return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function findIdentityAny($id)
+    {
+        return static::findOne(['id' => $id]);
     }
 
     /**
@@ -200,6 +209,7 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             'username'=>'用户名',
             'email'=>'邮件',
+            'phone'=>'电话',
             'created_at'=>'创建时间',
             'status'=>'状态'
         ];

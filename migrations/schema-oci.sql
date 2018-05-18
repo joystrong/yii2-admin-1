@@ -27,6 +27,7 @@ create table "user"
     "password_hash" varchar(256) NOT NULL,
     "password_reset_token" varchar(256),
     "email" varchar(256) NOT NULL,
+    "phone" varchar(100) NOT NULL,
     "status" integer not null default 10,
     "created_at" number(10) not null,
     "updated_at" number(10) not null

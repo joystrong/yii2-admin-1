@@ -67,4 +67,7 @@ return [
     'Application' => '应用',
     'Create User' => '新增管理员',
     'Signup' => '注册',
+    'Update User' => '更新管理员',
+    'Activate' => '激活',
+    'InActivate' => '禁用',
 ];

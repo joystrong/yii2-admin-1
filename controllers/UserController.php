@@ -3,6 +3,7 @@
 namespace mdm\admin\controllers;
 
 use mdm\admin\components\AccessControl;
+use mdm\admin\models\form\Update;
 use Yii;
 use mdm\admin\models\form\Login;
 use mdm\admin\models\form\PasswordResetRequest;
@@ -83,8 +84,8 @@ class UserController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-                'searchModel' => $searchModel,
-                'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -96,7 +97,7 @@ class UserController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-                'model' => $this->findModel($id),
+            'model' => $this->findModel($id),
         ]);
     }
 
@@ -128,7 +129,7 @@ class UserController extends Controller
             return $this->goBack();
         } else {
             return $this->render('login', [
-                    'model' => $model,
+                'model' => $model,
             ]);
         }
     }
@@ -149,18 +150,18 @@ class UserController extends Controller
      * @return string
 
     public function actionSignup()
-    {
-        $model = new Signup();
-        if ($model->load(Yii::$app->getRequest()->post())) {
-            if ($user = $model->signup()) {
-                return $this->goHome();
-            }
-        }
-
-        return $this->render('signup', [
-                'model' => $model,
-        ]);
-    }*/
+     * {
+     * $model = new Signup();
+     * if ($model->load(Yii::$app->getRequest()->post())) {
+     * if ($user = $model->signup()) {
+     * return $this->goHome();
+     * }
+     * }
+     *
+     * return $this->render('signup', [
+     * 'model' => $model,
+     * ]);
+     * }*/
 
     /**
      * Request reset password
@@ -180,7 +181,7 @@ class UserController extends Controller
         }
 
         return $this->render('requestPasswordResetToken', [
-                'model' => $model,
+            'model' => $model,
         ]);
     }
 
@@ -203,7 +204,7 @@ class UserController extends Controller
         }
 
         return $this->render('resetPassword', [
-                'model' => $model,
+            'model' => $model,
         ]);
     }
 
@@ -219,7 +220,7 @@ class UserController extends Controller
         }
 
         return $this->render('change-password', [
-                'model' => $model,
+            'model' => $model,
         ]);
     }
 
@@ -236,14 +237,17 @@ class UserController extends Controller
         $user = $this->findModel($id);
         if ($user->status == User::STATUS_INACTIVE) {
             $user->status = User::STATUS_ACTIVE;
-            if ($user->save()) {
-                return $this->goHome();
-            } else {
-                $errors = $user->firstErrors;
-                throw new UserException(reset($errors));
-            }
+
+        } elseif ($user->status == User::STATUS_ACTIVE) {
+            $user->status = User::STATUS_INACTIVE;
         }
-        return $this->goHome();
+        if ($user->save()) {
+            return $this->redirect('index');
+        } else {
+            $errors = $user->firstErrors;
+            throw new UserException(reset($errors));
+        }
+        return $this->redirect('index');
     }
 
     /**
@@ -276,6 +280,28 @@ class UserController extends Controller
         }
 
         return $this->render('create', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Update user
+     * @param $id
+     * @return string
+     * @throws
+     */
+    public function actionUpdate($id)
+    {
+        $update = new Update();
+        $model = $update->getUser($id);
+        if ($update->load(Yii::$app->getRequest()->post())) {
+            if ($update->updateUser($id)) {
+                return $this->redirect(['index']);
+            } else {
+                Yii::$app->getSession()->setFlash('error', json_encode($update->errors));
+            }
+        }
+        return $this->render('update', [
             'model' => $model,
         ]);
     }

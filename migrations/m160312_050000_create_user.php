@@ -26,6 +26,7 @@ class m160312_050000_create_user extends Migration
                 'password_hash' => $this->string()->notNull(),
                 'password_reset_token' => $this->string(),
                 'email' => $this->string()->notNull(),
+                'phone' => $this->string()->notNull(),
                 'status' => $this->smallInteger()->notNull()->defaultValue(10),
                 'created_at' => $this->integer()->notNull(),
                 'updated_at' => $this->integer()->notNull(),
@@ -38,6 +39,7 @@ class m160312_050000_create_user extends Migration
                 'password_hash'=>'$2y$13$LENFu.1SdAsO.WoWgTq.LurGHzHXTf.Q7zGhPJ4lpEw1e6WjHUeQ.',
                 'password_reset_token'=>'',
                 'email'=>'admin@admin.com',
+                'phone'=>'00000000000',
                 'status'=>10,
                 'created_at'=>$time,
                 'updated_at'=>$time

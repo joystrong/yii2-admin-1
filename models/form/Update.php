@@ -8,7 +8,7 @@ use yii\base\Model;
 /**
  * Signup form
  */
-class Signup extends Model
+class Update extends Model
 {
     public $username;
     public $email;
@@ -23,18 +23,9 @@ class Signup extends Model
         return [
             ['username', 'filter', 'filter' => 'trim'],
             ['username', 'required'],
-            ['username', 'unique', 'targetClass' => 'mdm\admin\models\User', 'message' => 'This username has already been taken.'],
+            //['username', 'unique', 'targetClass' => 'mdm\admin\models\User', 'message' => 'This username has already been taken.'],
             ['username', 'string', 'min' => 2, 'max' => 255],
-
-            ['email', 'filter', 'filter' => 'trim'],
-            ['email', 'required'],
-            ['email', 'email'],
-            ['email', 'unique', 'targetClass' => 'mdm\admin\models\User', 'message' => 'This email address has already been taken.'],
-
-            ['phone', 'filter', 'filter' => 'trim'],
-            ['phone', 'required'],
-            ['phone', 'unique', 'targetClass' => 'mdm\admin\models\User', 'message' => 'This phone has already been taken.'],
-
+            [['email','phone'],'safe'],
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
         ];
@@ -45,21 +36,33 @@ class Signup extends Model
      *
      * @return User|null the saved model or null if saving fails
      */
-    public function signup()
+    public function updateUser($id)
     {
         if ($this->validate()) {
-            $user = new User();
+            $user = User::findIdentityAny($id);
             $user->username = $this->username;
             $user->email = $this->email;
             $user->phone = $this->phone;
-            $user->setPassword($this->password);
-            $user->generateAuthKey();
+            if ($this->password){
+                $user->setPassword($this->password);
+                $user->generateAuthKey();
+            }
             if ($user->save()) {
                 return $user;
             }
         }
 
         return null;
+    }
+
+    public function getUser($id)
+    {
+        $user =  User::findIdentityAny($id);
+        $update = new Update();
+        $update->username = $user->username;
+        $update->email = $user->email;
+        $update->phone = $user->phone;
+        return $update;
     }
 
     public function attributeLabels()
